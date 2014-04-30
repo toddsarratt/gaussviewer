@@ -1,3 +1,5 @@
+package com.toddsarratt.gaussviewer;
+
 import com.google.gson.JsonObject;
 import java.io.*;
 import java.sql.Connection;
@@ -12,7 +14,7 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import org.postgresql.ds.PGSimpleDataSource;
 
-public class GaussViewerDev extends HttpServlet {
+public class GaussViewer extends HttpServlet {
 
     static Connection dbConnection;
     private static String portfolioName;
