@@ -30,7 +30,7 @@ totalCash = <span id="totalCash">{{summary.totalCash}}</span></pre>
 	<script>
 	var summaryModule = angular.module('gaussViewer',[])
 	function SummaryController($scope, $http) {
-	 $http.get('/gaussViewer/gvHome').success(function(data, status, headers, config) {
+	 $http.get('/gaussviewer/gvHome').success(function(data, status, headers, config) {
 	 $scope.summary = data;
 	 });
 	}

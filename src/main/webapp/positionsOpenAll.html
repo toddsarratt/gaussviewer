@@ -47,7 +47,7 @@
 	<script type="text/javascript">
 	var positionsOpenAll = angular.module('gaussViewer',[])
 	function PositionsOpenAllController($scope, $http) {
-	 $http.get('/gaussViewer/gvPosOpenAll').success(function(data, status, headers, config) {
+	 $http.get('/gaussviewer/gvPosOpenAll').success(function(data, status, headers, config) {
 	 $scope.positions = data;
 	 });
 	}
