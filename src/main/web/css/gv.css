@@ -1,0 +1,40 @@
+body {
+	font-size: large;
+	font-family: sans-serif;
+	background-color: black;
+	color: #FF9C14;
+}
+table {
+	background-color: #58585A; 
+}
+button {
+	background-color:#58585A;
+	border-top-left-radius:20px;
+	border-top-right-radius:20px;
+	border-bottom-right-radius:20px;
+	border-bottom-left-radius:20px;
+	color: #FF9C14;
+	text-indent:0;
+	display:inline-block;
+	font-size:15px;
+	font-weight:bold;
+	font-style:normal;
+	height:49%;
+	width:49%;
+	text-decoration:none;
+	text-align:center;
+}
+button:active {
+	position:relative;
+	top:1px;
+}
+/* This button was generated using CSSButtonGenerator.com */
+#todaysCount {
+	font-size:60px;
+}
+#positionCount {
+	font-size:60px;
+}
+#orderCount {
+	font-size:60px;
+}

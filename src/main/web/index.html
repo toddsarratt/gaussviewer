@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html ng-app='gaussViewer'>
+<head>
+	<meta charset="utf-8">
+	<title>GaussViewer</title>
+	<link rel="stylesheet" href="css/gv.css">
+	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.min.js"></script>
+</head>
+<body ng-controller="SummaryController">
+	<h1 align=center>GaussViewer</h1>
+	<button type ="button">
+		<h2 align="center">Portfolio Summary</h2>
+		<pre align="center">NAV = <span id="nav">{{summary.nav}}</span>
+freeCash = <span id="freeCash">{{summary.freeCash}}</span>
+reservedCash = <span id="reservedCash">{{summary.reservedCash}}</span>
+totalCash = <span id="totalCash">{{summary.totalCash}}</span></pre>
+	</button>
+	<button type ="button">
+		<h2 align="center">Positions Opened Today</h2>
+		<pre align="center"><span id="todaysCount">{{summary.positionsToday}}</span></pre>
+	</button>
+	<button type ="button" onclick="location.href='/gaussViewer/positionsOpenAll.html'">
+		<h2 align="center">Open Positions</h2>
+		<pre align="center"><span id="positionCount">{{summary.positionCount}}</span></pre>
+	</button>
+	<button type ="button">
+		<h2 align="center">Open Orders</h2>
+		<pre align="center"><span id="orderCount">{{summary.orderCount}}</span></pre>
+	</button>
+	<script>
+	var summaryModule = angular.module('gaussViewer',[])
+	function SummaryController($scope, $http) {
+	 $http.get('/gaussViewer/gvHome').success(function(data, status, headers, config) {
+	 $scope.summary = data;
+	 });
+	}
+	</script>
+	!MORE AWESOMER!
+</body>
+</html>

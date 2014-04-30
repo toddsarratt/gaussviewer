@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html ng-app='gaussViewer'>
+<head>
+	<meta charset="utf-8">
+	<META http-equiv="Content-Script-Type" content="text/javascript">
+	<title>GaussViewer</title>
+	<link rel="stylesheet" href="css/gv.css">
+	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.min.js"></script>
+</head>
+<body ng-controller="PositionsOpenAllController">
+	<h1 align=center>GaussViewer</h1>
+	<h2 align=center>Open Positions</h2>
+	<table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
+	<tr>
+		<td align="center">Position ID</td>
+		<td align="center">Ticker</td>
+		<td align="center">Security</td>
+		<td align="center">Expiry</td>
+		<td align="center">Underlying</td>
+		<td align="center">Strike Price</td>
+		<td align="center">Date Opened</td>
+		<td align="center">Long / Short</td>
+		<td align="center">Quantity</td>
+		<td align="center">Price at Open</td>
+		<td align="center">Cost Basis</td>
+		<td align="center">Claim Against Cash</td>
+		<td align="center">NAV</td>
+		<td align="center">Gain / Loss</td>
+	</tr>
+	<tr ng-repeat='position in positions'>
+		<td>{{position.positionId}}</td>
+		<td>{{position.ticker}}</td>
+		<td>{{position.secType}}</td>
+		<td>{{position.expiry}}</td>
+		<td>{{position.underlyingTicker}}</td>
+		<td>{{position.strikePrice}}</td>
+		<td>{{position.epochOpened}}</td>
+		<td>{{position.longPosition}}</td>
+		<td>{{position.numberTransacted}}</td>
+		<td>{{position.priceAtOpen}}</td>
+		<td>{{position.costBasis}}</td>
+		<td>{{position.claimAgainstCash}}</td>
+		<td>{{position.nav}}</td>
+		<td>{{position.profit}}</td>
+	</tr>
+	</table>
+	<script type="text/javascript">
+	var positionsOpenAll = angular.module('gaussViewer',[])
+	function PositionsOpenAllController($scope, $http) {
+	 $http.get('/gaussViewer/gvPosOpenAll').success(function(data, status, headers, config) {
+	 $scope.positions = data;
+	 });
+	}
+	</script>
+</body>
+</html>	
