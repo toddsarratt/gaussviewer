@@ -1,3 +1,5 @@
+package com.toddsarratt.gaussviewer;
+
 import com.google.gson.JsonObject;
 import com.google.gson.JsonArray;
 import java.io.*;
@@ -6,24 +8,22 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.NumberFormat;
-import java.time.*;
+import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import net.toddsarratt.GaussTrader.Portfolio;
 import net.toddsarratt.GaussTrader.Position;
 import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.postgresql.ds.PGSimpleDataSource;
 
-public class PositionsOpenAll extends HttpServlet {
+public class PositionsOpenToday extends HttpServlet {
 
     static Connection dbConnection;
-    private static String portfolioName;
+/*    private static String portfolioName;      */
     private static final NumberFormat CURRENCY_FORMAT = NumberFormat.getCurrencyInstance();
     private static final ZoneId NEW_YORK_TZ = ZoneId.of("America/New_York");
     private static final DateTimeFormatter MONTH_DAY_YEAR_FORMATTER = DateTimeFormat.forPattern("MM/dd/yyyy");
@@ -31,10 +31,10 @@ public class PositionsOpenAll extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 /*		portfolioName = request.getParameter("portfolioName");			*/
-		JsonObject positionJson = new JsonObject();
+		JsonObject positionJson;
 		JsonArray positionsOpenAllJsonArray = new JsonArray();
 		PrintWriter responseWriter = response.getWriter();
-		for(Position positionToConvert : generatePositionsOpenAllList()) {
+		for(Position positionToConvert : generatePositionsOpenTodayList()) {
 			positionJson = new JsonObject();	
 			positionJson.addProperty("positionId", Long.toString(positionToConvert.getPositionId()));
 			positionJson.addProperty("ticker", positionToConvert.getTicker());
@@ -58,17 +58,23 @@ public class PositionsOpenAll extends HttpServlet {
 		responseWriter.print(positionsOpenAllJsonArray);
 	}
 
-	private List<Position> generatePositionsOpenAllList() {
+	private List<Position> generatePositionsOpenTodayList() {
 		List<Position> positionsOpenAllList = null;
 		Position portfolioPositionEntry;
+        DateTime todayMidnight = new DateTime(NEW_YORK_TZ).withTimeAtStartOfDay();
 	    try {
 	    	positionsOpenAllList = new ArrayList<>();
-		    PreparedStatement positionsOpenAllStatement = dbConnection.prepareStatement("SELECT * FROM positions WHERE portfolio = ? AND open = true ORDER BY epoch_opened DESC");
+		    PreparedStatement positionsOpenAllStatement = dbConnection.prepareStatement("SELECT * FROM positions " +
+                    "WHERE portfolio = ? " +
+                    "AND open = true " +
+                    "AND epoch_opened > ?" +
+                    "ORDER BY epoch_opened DESC");
 		    /* Fix this damn shit
 		    portfolioSummaryStatement.setString(1, portfolioName);
 		    */
 		    positionsOpenAllStatement.setString(1, "shortStrat2014Feb");
-		    ResultSet positionsOpenAllResultSet = positionsOpenAllStatement.executeQuery();
+            positionsOpenAllStatement.setLong(2, todayMidnight.getMillis());
+            ResultSet positionsOpenAllResultSet = positionsOpenAllStatement.executeQuery();
 		    while(positionsOpenAllResultSet.next()) {
 				portfolioPositionEntry = Portfolio.dbToPortfolioPosition(positionsOpenAllResultSet);
 				positionsOpenAllList.add(portfolioPositionEntry);

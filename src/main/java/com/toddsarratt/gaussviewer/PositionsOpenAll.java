@@ -1,3 +1,5 @@
+package com.toddsarratt.gaussviewer;
+
 import com.google.gson.JsonObject;
 import com.google.gson.JsonArray;
 import java.io.*;
@@ -8,14 +10,11 @@ import java.sql.SQLException;
 import java.text.NumberFormat;
 import java.time.*;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import net.toddsarratt.GaussTrader.Portfolio;
 import net.toddsarratt.GaussTrader.Position;
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.postgresql.ds.PGSimpleDataSource;
@@ -31,7 +30,7 @@ public class PositionsOpenAll extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 /*		portfolioName = request.getParameter("portfolioName");			*/
-		JsonObject positionJson = new JsonObject();
+		JsonObject positionJson;
 		JsonArray positionsOpenAllJsonArray = new JsonArray();
 		PrintWriter responseWriter = response.getWriter();
 		for(Position positionToConvert : generatePositionsOpenAllList()) {
