@@ -6,15 +6,15 @@
          version="2.4">
     <servlet>
         <servlet-name>serveGv</servlet-name>
-        <servlet-class>GaussViewer</servlet-class>
+        <servlet-class>com.toddsarratt.gaussviewer.GaussViewer</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>getPositionsOpenAll</servlet-name>
-        <servlet-class>PositionsOpenAll</servlet-class>
+        <servlet-class>com.toddsarratt.gaussviewer.PositionsOpenAll</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>getPositionsOpenToday</servlet-name>
-        <servlet-class>PositionsOpenToday</servlet-class>
+        <servlet-class>com.toddsarratt.gaussviewer.PositionsOpenToday</servlet-class>
     </servlet>
 
     <servlet-mapping>
