@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.text.NumberFormat;
 import java.time.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -58,7 +59,7 @@ public class PositionsOpenAll extends HttpServlet {
 	}
 
 	private List<Position> generatePositionsOpenAllList() {
-		List<Position> positionsOpenAllList = null;
+		List<Position> positionsOpenAllList = Collections.emptyList();
 		Position portfolioPositionEntry;
 	    try {
 	    	positionsOpenAllList = new ArrayList<>();

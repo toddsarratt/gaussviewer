@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.text.NumberFormat;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -59,11 +60,11 @@ public class PositionsOpenToday extends HttpServlet {
 	}
 
 	private List<Position> generatePositionsOpenTodayList() {
-		List<Position> positionsOpenAllList = null;
+		List<Position> positionsOpenTodayList = Collections.emptyList();
 		Position portfolioPositionEntry;
         DateTime todayMidnight = new DateTime(NEW_YORK_TZ).withTimeAtStartOfDay();
 	    try {
-	    	positionsOpenAllList = new ArrayList<>();
+	    	positionsOpenTodayList = new ArrayList<>();
 		    PreparedStatement positionsOpenAllStatement = dbConnection.prepareStatement("SELECT * FROM positions " +
                     "WHERE portfolio = ? " +
                     "AND open = true " +
@@ -77,12 +78,12 @@ public class PositionsOpenToday extends HttpServlet {
             ResultSet positionsOpenAllResultSet = positionsOpenAllStatement.executeQuery();
 		    while(positionsOpenAllResultSet.next()) {
 				portfolioPositionEntry = Portfolio.dbToPortfolioPosition(positionsOpenAllResultSet);
-				positionsOpenAllList.add(portfolioPositionEntry);
+				positionsOpenTodayList.add(portfolioPositionEntry);
 		    }
 		} catch(SQLException sqle) {
 			sqle.printStackTrace();
 		}
-		return positionsOpenAllList;
+		return positionsOpenTodayList;
 	}
 
 	@Override
