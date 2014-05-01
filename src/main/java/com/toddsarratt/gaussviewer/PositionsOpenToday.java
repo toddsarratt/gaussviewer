@@ -8,7 +8,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.NumberFormat;
-import java.time.ZoneId;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -16,9 +17,6 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import net.toddsarratt.GaussTrader.Portfolio;
 import net.toddsarratt.GaussTrader.Position;
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 import org.postgresql.ds.PGSimpleDataSource;
 
 public class PositionsOpenToday extends HttpServlet {
@@ -26,8 +24,8 @@ public class PositionsOpenToday extends HttpServlet {
     static Connection dbConnection;
 /*    private static String portfolioName;      */
     private static final NumberFormat CURRENCY_FORMAT = NumberFormat.getCurrencyInstance();
-    private static final ZoneId NEW_YORK_TZ = ZoneId.of("America/New_York");
-    private static final DateTimeFormatter MONTH_DAY_YEAR_FORMATTER = DateTimeFormat.forPattern("MM/dd/yyyy");
+    private static final ZoneOffset NEW_YORK_TZ = LocalDateTime.now().atZone(ZoneId.of("America/New_York")).getOffset();
+    private static final DateTimeFormatter MONTH_DAY_YEAR_FORMATTER = DateTimeFormatter.BASIC_ISO_DATE;
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -40,10 +38,10 @@ public class PositionsOpenToday extends HttpServlet {
 			positionJson.addProperty("positionId", Long.toString(positionToConvert.getPositionId()));
 			positionJson.addProperty("ticker", positionToConvert.getTicker());
 			positionJson.addProperty("secType", positionToConvert.getSecType());
-			positionJson.addProperty("expiry", positionToConvert.isStock() ? "n/a" : MONTH_DAY_YEAR_FORMATTER.print(positionToConvert.getExpiry()));
+			positionJson.addProperty("expiry", positionToConvert.isStock() ? "n/a" : positionToConvert.getExpiry().toString());
 			positionJson.addProperty("underlyingTicker", positionToConvert.getUnderlyingTicker());
 			positionJson.addProperty("strikePrice", CURRENCY_FORMAT.format(positionToConvert.getStrikePrice()));
-			positionJson.addProperty("epochOpened", MONTH_DAY_YEAR_FORMATTER.print(positionToConvert.getEpochOpened()));
+			positionJson.addProperty("epochOpened", LocalDateTime.ofEpochSecond(positionToConvert.getEpochOpened() / 1000, 0, NEW_YORK_TZ).format(MONTH_DAY_YEAR_FORMATTER));
 			positionJson.addProperty("longPosition", positionToConvert.isLong() ? "long" : "short");
 			positionJson.addProperty("numberTransacted", positionToConvert.getNumberTransacted());
 			positionJson.addProperty("priceAtOpen", CURRENCY_FORMAT.format(positionToConvert.getPriceAtOpen()));
@@ -62,7 +60,7 @@ public class PositionsOpenToday extends HttpServlet {
 	private List<Position> generatePositionsOpenTodayList() {
 		List<Position> positionsOpenTodayList = Collections.emptyList();
 		Position portfolioPositionEntry;
-        DateTime todayMidnight = new DateTime(NEW_YORK_TZ).withTimeAtStartOfDay();
+        ZonedDateTime todayMidnight = ZonedDateTime.of(LocalDate.now(), LocalTime.parse("00:00"), NEW_YORK_TZ);
 	    try {
 	    	positionsOpenTodayList = new ArrayList<>();
 		    PreparedStatement positionsOpenAllStatement = dbConnection.prepareStatement("SELECT * FROM positions " +
@@ -74,7 +72,7 @@ public class PositionsOpenToday extends HttpServlet {
 		    portfolioSummaryStatement.setString(1, portfolioName);
 		    */
 		    positionsOpenAllStatement.setString(1, "shortStrat2014Feb");
-            positionsOpenAllStatement.setLong(2, todayMidnight.getMillis());
+            positionsOpenAllStatement.setLong(2, todayMidnight.toEpochSecond() * 1000);
             ResultSet positionsOpenAllResultSet = positionsOpenAllStatement.executeQuery();
 		    while(positionsOpenAllResultSet.next()) {
 				portfolioPositionEntry = Portfolio.dbToPortfolioPosition(positionsOpenAllResultSet);
