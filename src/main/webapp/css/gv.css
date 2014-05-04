@@ -1,4 +1,8 @@
-body {
+html, body {
+    width: 100.1%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
 	font-size: large;
 	font-family: sans-serif;
 	background-color: black;
@@ -28,12 +32,21 @@ button:active {
 	position:relative;
 	top:1px;
 }
-/* This button was generated using CSSButtonGenerator.com */
-#todaysCount {
+div {
+    padding: 0;
+    margin: 0;
+    width: 50%;
+    height: 50%;
+    float: left;
+}
+#summary {
 	font-size:60px;
 }
-#positionCount {
+#positionsToday {
 	font-size:60px;
+}
+#positionsAll {
+    font-size:60px;
 }
 #orderCount {
 	font-size:60px;
