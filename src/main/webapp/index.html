@@ -10,7 +10,7 @@
 </head>
 <body data-ng-controller="SummaryController">
 	<h1 align=center>GaussViewer</h1>
-	<button type="button">
+	<button type ="button">
 		<h2 align="center">Portfolio Summary</h2>
 		<pre align="center">NAV = <span id="nav">{{summary.nav}}</span>
 freeCash = <span id="freeCash">{{summary.freeCash}}</span>
@@ -33,9 +33,10 @@ totalCash = <span id="totalCash">{{summary.totalCash}}</span></pre>
 	var summaryModule=angular.module('gaussViewer',[])
 	function SummaryController($scope, $http) {
 	 $http.get('/gaussviewer/gvHome').success(function(data, status, headers, config) {
-	 $scope.summary=data;
+	 $scope.summary = data;
 	 });
 	}
 	</script>
+	!MORE AWESOMER!
 </body>
 </html>
