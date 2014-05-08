@@ -16,14 +16,17 @@ div {
     height: 50%;
     float: left;
     background-color:#58585A;
+    border-top-left-radius:20px;
+    border-top-right-radius:20px;
+    border-bottom-right-radius:20px;
+    border-bottom-left-radius:20px;
+    color: #FF9C14;
+    text-align:center;
 }
-#summary {
+#todaysCount {
     font-size:60px;
 }
-#positionsToday {
-    font-size:60px;
-}
-#positionsAll {
+#positionCount {
     font-size:60px;
 }
 #orderCount {

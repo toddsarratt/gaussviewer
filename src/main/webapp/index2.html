@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang='en'
-      data-ng-app='gaussViewer'>
+      data-ng-app='gaussviewer'>
   <head>
     <meta charset="utf-8"/>
     <title>GaussViewer</title>
@@ -20,11 +20,11 @@ freeCash = <span id="freeCash">{{summary.freeCash}}</span>
 reservedCash = <span id="reservedCash">{{summary.reservedCash}}</span>
 totalCash = <span id="totalCash">{{summary.totalCash}}</span></pre>
       </div>
-      <div class="span4" onclick="location.href='/positionsOpenToday.html'">
+      <div class="span4" onclick="location.href='/gaussviewer/positionsOpenToday.html'">
         <h2 align="center">Positions Opened Today</h2>
         <pre align="center"><span id="todaysCount">{{summary.positionsToday}}</span></pre>
       </div>
-      <div class="span4" onclick="location.href='/positionsOpenAll.html'">
+      <div class="span4" onclick="location.href='/gaussviewer/positionsOpenAll.html'">
         <h2 align="center">Open Positions</h2>
         <pre align="center"><span id="positionCount">{{summary.positionCount}}</span></pre>
       </div>
@@ -34,7 +34,7 @@ totalCash = <span id="totalCash">{{summary.totalCash}}</span></pre>
       </div>
     </div>
     <script>
-      var summaryModule=angular.module('gaussViewer',[])
+      var summaryModule=angular.module('gaussviewer',[])
       function SummaryController($scope, $http) {
         $http.get('/gaussviewer/gvHome').success(function(data, status, headers, config) {
           $scope.summary=data;
