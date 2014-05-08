@@ -1,40 +1,45 @@
 <!DOCTYPE html>
 <html lang='en'
       data-ng-app='gaussViewer'>
-<head>
+  <head>
     <meta charset="utf-8"/>
     <title>GaussViewer</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/gv2.css">
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.min.js"></script>
-</head>
-<body data-ng-controller="SummaryController">
-<header>GaussViewer</header>
-<div id="summary">
-    <h2 align="center">Portfolio Summary</h2>
-		<pre align="center">NAV = <span id="nav">{{summary.nav}}</span>
+  </head>
+  <body data-ng-controller="SummaryController">
+    <header>GaussViewer</header>
+    <!-- Row of columns -->
+    <div class="row">
+      <div class="span4">
+        <h2 align="center">Portfolio Summary</h2>
+        <pre align="center">NAV = <span id="nav">{{summary.nav}}</span>
 freeCash = <span id="freeCash">{{summary.freeCash}}</span>
 reservedCash = <span id="reservedCash">{{summary.reservedCash}}</span>
 totalCash = <span id="totalCash">{{summary.totalCash}}</span></pre>
-</div>
-<div id="positionsToday" onclick="location.href='/positionsOpenToday.html'">
-    <h2 align="center">Positions Opened Today</h2>
-    <pre align="center"><span id="todaysCount">{{summary.positionsToday}}</span></pre>
-</div>
-<div id="positionsAll" onclick="location.href='/positionsOpenAll.html'">
-    <h2 align="center">Open Positions</h2>
-    <pre align="center"><span id="positionCount">{{summary.positionCount}}</span></pre>
-</div>
-<div id="orders">
-    <h2 align="center">Open Orders</h2>
-    <pre align="center"><span id="orderCount">{{summary.orderCount}}</span></pre>
-</div>
-<script>
-    var summaryModule=angular.module('gaussViewer',[])
-    function SummaryController($scope, $http) {
+      </div>
+      <div class="span4" onclick="location.href='/positionsOpenToday.html'">
+        <h2 align="center">Positions Opened Today</h2>
+        <pre align="center"><span id="todaysCount">{{summary.positionsToday}}</span></pre>
+      </div>
+      <div class="span4" onclick="location.href='/positionsOpenAll.html'">
+        <h2 align="center">Open Positions</h2>
+        <pre align="center"><span id="positionCount">{{summary.positionCount}}</span></pre>
+      </div>
+      <div class="span4">
+        <h2 align="center">Open Orders</h2>
+        <pre align="center"><span id="orderCount">{{summary.orderCount}}</span></pre>
+      </div>
+    </div>
+    <script>
+      var summaryModule=angular.module('gaussViewer',[])
+      function SummaryController($scope, $http) {
         $http.get('/gaussviewer/gvHome').success(function(data, status, headers, config) {
-            $scope.summary=data;
+          $scope.summary=data;
         });
-    }
-</script>
-</body>
+      }
+    </script>
+  </body>
 </html>        

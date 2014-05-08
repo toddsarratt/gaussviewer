@@ -1,7 +1,8 @@
 html, body {
     width: 100.1%;
     height: 100%;
-    padding: 0;
+    padding-top: 60px;
+    padding-bottom: 40px;
     margin: 0;
     font-size: large;
     font-family: sans-serif;
