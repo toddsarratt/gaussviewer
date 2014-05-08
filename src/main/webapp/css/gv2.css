@@ -9,7 +9,11 @@ html, body {
     background-color: black;
     color: #FF9C14;
 }
-div {
+header {
+    text-align: center;
+    font-size: 250%;
+}
+.span4 {
     padding: 0;
     margin: 0;
     width: 50%;
