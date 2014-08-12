@@ -22,7 +22,7 @@ import org.postgresql.ds.PGSimpleDataSource;
 public class PositionsOpenToday extends HttpServlet {
 
     static Connection dbConnection;
-/*    private static String portfolioName;      */
+    private static String portfolioName = "shortStrat2014Aug07";
     private static final NumberFormat CURRENCY_FORMAT = NumberFormat.getCurrencyInstance();
     private static final ZoneOffset NEW_YORK_TZ = LocalDateTime.now().atZone(ZoneId.of("America/New_York")).getOffset();
     private static final DateTimeFormatter MONTH_DAY_YEAR_FORMATTER = DateTimeFormatter.BASIC_ISO_DATE;
@@ -71,7 +71,7 @@ public class PositionsOpenToday extends HttpServlet {
 		    /* Fix this damn shit
 		    portfolioSummaryStatement.setString(1, portfolioName);
 		    */
-		    positionsOpenAllStatement.setString(1, "shortStrat2014Feb");
+		    positionsOpenAllStatement.setString(1, portfolioName);
             positionsOpenAllStatement.setLong(2, todayMidnight.toEpochSecond() * 1000);
             ResultSet positionsOpenAllResultSet = positionsOpenAllStatement.executeQuery();
 		    while(positionsOpenAllResultSet.next()) {

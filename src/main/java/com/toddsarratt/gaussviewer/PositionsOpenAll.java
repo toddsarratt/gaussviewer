@@ -23,7 +23,7 @@ import org.postgresql.ds.PGSimpleDataSource;
 public class PositionsOpenAll extends HttpServlet {
 
     static Connection dbConnection;
-    private static String portfolioName;
+   private static String portfolioName = "shortStrat2014Aug07";
     private static final NumberFormat CURRENCY_FORMAT = NumberFormat.getCurrencyInstance();
     private static final ZoneId NEW_YORK_TZ = ZoneId.of("America/New_York");
     private static final DateTimeFormatter MONTH_DAY_YEAR_FORMATTER = DateTimeFormat.forPattern("MM/dd/yyyy");
@@ -64,10 +64,7 @@ public class PositionsOpenAll extends HttpServlet {
 	    try {
 	    	positionsOpenAllList = new ArrayList<>();
 		    PreparedStatement positionsOpenAllStatement = dbConnection.prepareStatement("SELECT * FROM positions WHERE portfolio = ? AND open = true ORDER BY epoch_opened DESC");
-		    /* Fix this damn shit
-		    portfolioSummaryStatement.setString(1, portfolioName);
-		    */
-		    positionsOpenAllStatement.setString(1, "shortStrat2014Feb");
+		    positionsOpenAllStatement.setString(1, portfolioName);
 		    ResultSet positionsOpenAllResultSet = positionsOpenAllStatement.executeQuery();
 		    while(positionsOpenAllResultSet.next()) {
 				portfolioPositionEntry = Portfolio.dbToPortfolioPosition(positionsOpenAllResultSet);

@@ -17,13 +17,14 @@ import org.postgresql.ds.PGSimpleDataSource;
 public class GaussViewer extends HttpServlet {
 
     static Connection dbConnection;
-/*    private static String portfolioName;          */
+    private static String portfolioName = "shortStrat2014Aug07";
     private static final NumberFormat CURRENCY_FORMAT = NumberFormat.getCurrencyInstance();
     private static final ZoneId NEW_YORK_TZ = ZoneId.of("America/New_York");
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-/*		portfolioName = request.getParameter("portfolioName");		*/
+/*		TODO :
+      portfolioName = request.getParameter("portfolioName");		*/
 		PrintWriter responseWriter = response.getWriter();
 		Map <String, Double> summaryMap = generateSummaryMap();
 		JsonObject portfolioJson = new JsonObject();	
@@ -44,10 +45,7 @@ public class GaussViewer extends HttpServlet {
 	    try {
 	    	dbMap = new HashMap<>();
 		    PreparedStatement portfolioSummaryStatement = dbConnection.prepareStatement("SELECT * FROM portfolios WHERE name = ?");
-		    /* Fix this damn shit
 		    portfolioSummaryStatement.setString(1, portfolioName);
-		    */
-		    portfolioSummaryStatement.setString(1, "shortStrat2014Feb");
 		    ResultSet portfolioSummaryResultSet = portfolioSummaryStatement.executeQuery();
 		    if(portfolioSummaryResultSet.next()) {
 		        double netAssetValue = portfolioSummaryResultSet.getDouble("net_asset_value");
@@ -68,7 +66,7 @@ public class GaussViewer extends HttpServlet {
 	    try {
 			ZonedDateTime todayMidnight = ZonedDateTime.of(LocalDate.now(), LocalTime.parse("00:00"), NEW_YORK_TZ);
 		    PreparedStatement countStatement = dbConnection.prepareStatement("SELECT count(*) FROM positions WHERE portfolio = ? AND epoch_opened >= ?");
-		    countStatement.setString(1, "shortStrat2014Feb");
+		    countStatement.setString(1, portfolioName);
 		    countStatement.setLong(2, (todayMidnight.toEpochSecond() * 1000));
 		    ResultSet countResultSet = countStatement.executeQuery();
 		    return countResultSet.next() ? countResultSet.getInt("count") : 0;
@@ -80,7 +78,7 @@ public class GaussViewer extends HttpServlet {
 	private int openPositions() {
 	    try {
 		    PreparedStatement portfolioPositionStatement = dbConnection.prepareStatement("SELECT count(*) FROM positions WHERE portfolio = ? AND open = true");
-		    portfolioPositionStatement.setString(1, "shortStrat2014Feb");
+		    portfolioPositionStatement.setString(1, portfolioName);
 		    ResultSet portfolioPositionResultSet = portfolioPositionStatement.executeQuery();
 		    return portfolioPositionResultSet.next() ? portfolioPositionResultSet.getInt("count") : 0;
 		} catch(SQLException sqle) {
@@ -91,7 +89,7 @@ public class GaussViewer extends HttpServlet {
 	private int openOrders() {
 		try{
 		    PreparedStatement portfolioOrderStatement = dbConnection.prepareStatement("SELECT count(*) FROM orders WHERE portfolio = ? AND open = true");
-		    portfolioOrderStatement.setString(1, "shortStrat2014Feb");
+		    portfolioOrderStatement.setString(1, portfolioName);
 		    ResultSet portfolioOrderResultSet = portfolioOrderStatement.executeQuery();		
 		    return portfolioOrderResultSet.next() ? portfolioOrderResultSet.getInt("count") : 0;
 		} catch(SQLException sqle) {
